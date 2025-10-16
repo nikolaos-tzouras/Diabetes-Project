@@ -1,7 +1,7 @@
 🩺 Factors Affecting Diabetes – Data Analysis Project
 
-Author: Nikolaos Tzouras
-Date: October 2025
+- Author: Nikolaos Tzouras
+- Date: October 2025
 
 
 🧠 About this Project
@@ -36,10 +36,10 @@ Date: October 2025
 ⚙️ Tools & Methods
 🧩 Tools
 
-Language: R
+- Language: R
 
 Key Packages:
-NHANES, ggplot2, dplyr, tidyr, pROC, car, ResourceSelection, kableExtra, tidyverse
+- NHANES, ggplot2, dplyr, tidyr, pROC, car, ResourceSelection, kableExtra, tidyverse
 
 
 🧮 Methods
@@ -79,7 +79,6 @@ This project was developed to explore how everyday health and lifestyle indicato
 
 🧾 Contact
 
-Author: Nikolaos Tzouras
 📧 [tzourasnikos@gmail.com]
 🔗 [www.linkedin.com/in/
 nikolaos-tzouras]
