@@ -18,6 +18,10 @@ h1 { font-size: 32px; }
 h2 { font-size: 28px; }
 h3 { font-size: 24px; }
 code { font-family: Consolas, monospace; }
+
+th {
+    white-space: nowrap;
+  }
 </style>
 
 
@@ -25,103 +29,139 @@ code { font-family: Consolas, monospace; }
   
 ## 1. Introduction
   
-Diabetes is a chronic disease that occurs either when the pancreas does not produce enough insulin or when the body cannot effectively use the insulin it produces.Diabetes is recognized as a significant factor in both mortality and morbidity worldwide, affecting various demographics.
+Diabetes is a chronic disease that occurs either when the pancreas does not produce enough insulin or when the body cannot effectively use the insulin it produces.Diabetes is recognized as a significant factor in both mortality and morbidity worldwide, affecting various demographics.  
 
-This project aims in exploring the way **demographics and clinical factors** (such as Age,Gender,Body Mass Index - BMI,Smoking Status and Cholesterol) are associated with the presence of diabetes in the population.
+Diabetes remain a major global health concern, and its importance in medical research continues to grow as new therapies are sought and developed, since over time, the mortality rates associated with diabetes have increased substantially and individuals diagnosed with the disease are facing higher health problems risks such as heart attack, stroke and kidney failure.   
 
-**Research Question:**
-  *How do demographic and clinical predictors influence the likelihood of having diabetes?*
+This project aims in exploring the way **Demographic and Clinical Factors** (such as Age,Gender,BMI,Smoking Status and Cholesterol etc.) are associated with the presence of diabetes in the population.  
+
+
+*Research Question:*
+  **How and which demographic and clinical predictors influence the likelihood of having diabetes?**
   
 ---
   
 ## 2. Data and Methodology
-  For the analysis, we extracted the data from the **NHANES** (National Health and Nutrition Examination Survey), which is a nationally representative survey of the United States population that includes demographic, clinical and biochemical measurements.
+  The data used in this project were extracted from the **NHANES** (National Health and Nutrition Examination Survey), a nationally representative survey of the United States population that included demographic, clinical and biochemical measurements.
 
-We selected the following variables out of the dataset:
-- **Diabetes** (Yes/No) → Target variable (Outcome)
-- **Age** (Years)
-- **Gender** (Male/Female)
-- **BMI** (Body Mass Index)
-- **SmokeNow** (Current Smoking Status)
-- **TotChol** (Total Cholesterol)
+We selected the following variables out of the dataset:  
+- **Diabetes** (Yes/No) → Target Variable (Outcome)  
+- **Age** (Years)  
+- **Gender** (Male/Female)  
+- **BMI** (Body Mass Index)  
+- **SmokeNow** (Current Smoking Status)  
+- **TotChol** (Total Cholesterol)  
+- **AgeDecade** (The Age Decade)  
+- **Race1** (Race)  
+- **Education**  (Education Completed)
+- **MaritalStatus** (Current Marital Status)  
+- **HHIncome** (Annual Household Income)  
+- **HomeOwn** (Household Status)  
+- **Work** (Working Status)  
+- **Weight** (Weight)  
+- **Height** (Height)  
+- **Pulse** (Last Examined Pulse)  
+- **HealthGen** (Self-Rated Health Status)  
+- **Depression** (Depression Status)  
+- **SleepHrsNight** (Amount Of Daily Sleeping Hours)  
+- **PhysActive** (Physical Activity)  
+- **HardDrugs** (Hard Drugs Usage)  
 
 
-Missing values where handled as follows:
-- Observations with NA for both **Diabetes** and **BMI** variables were completely removed.
-- Missing values for the categorical variable **SmokeNow** were instead replaced with the value **"Unknown"** thus creating a third categorical value.
+Missing values where handled as follows:  
+- Observations with missing values for,**SleepHrsNight**,**Pulse**, **HHIncome**, **Diabetes** and **BMI** variables were completely removed.  
+- For categorical variables were instead replaced with the value **"Unknown"** thus creating an extra categorical value, instead of lowering our sample data by a large amount, which would significantly decrease our categorical variables level value and would result in somewhat wrong conclusions. This level was included in the regression models for completeness but was not interpreted, as it does not carry substantive meaning.
 
-Our data set now holds 9629 observations while Cholesterol has a 12.7%  NA observation values. So, it was deemed necessary to conduct two separate analysis, i.e. a sensitivity analysis. The main analysis will be conducted without the cholesterol variable, and the secondary will include cholesterol where the NA values were recorded as the sample median.
+After cleaning, the dataset contained 6787 observations. The **Total Cholesterol** (TotChol) still contained approximately **4,84%** missing values, which were chosen not to be removed and instead since it has an extremely significant logical value in the causes affecting diabetes, were later filtered out only when creating the modeling dataset. This approach preserved as many observations as possible for descriptive analysis, providing a more comprehensive understanding of the data distribution.   
 
 ---
   
-## 3. Results
+## 3. Descriptive Statistical Analysis
   
   
-### 3.1 Descriptive Analysis 
-  Looking at the **Age** and **BMI** histograms, clearly there are massive differences between diabetic and non-diabetic individuals. 
-- Diabetic participants tend to be older and also have higher BMI on average than non-diabetics.
+### 3.1 Descriptive Analysis On Categorical Variables
+This section will only include proportional tables and histograms for categorical values, while the descriptive analysis for continuous variables will be displayed afterwards.  
 
+Given the overall distribution of observations that have diabetes (656 with vs 6131 without diabetes), no proportional threshold will be applied to exclude any categorical variables on the descriptive analysis. Some variables contain a large amount of levels,making it simply impossible for all their levels to actually reach such a threshold. However, the variables **HomeOwn, HHIncome , Gender and HardDrugs** showed negligible variation between diabetes groups, and were therefore excluded, as their level proportions were nearly identical and provided no analytically informative value for the purpose of the report.  
 
-On the secondary analysis, that includes the **Total Cholesterol**, the distribution plot does not suggest any strong separation between the two groups. 
+**Smoking status** appears to be associated with diabetes. The proportion of current smokers among individuals diagnosed with diabetes is approximately half compared to those without (7.4% vs 15%). However, it should be considered that the amount of diabetic participants that smoke is smaller than non-smokers within the same group. As expected, diabetes prevalence increases with age, demonstrating a clear trend where the likelihood of diabetes rises substantially across older age groups. Regarding racial differences, diabetes diagnosis rates are highest among **Black** individuals and lowest among **White** participants, even though they have the highest number of observations in the dataset. The remaining racial categories show similar proportions, with no distinct differences worth mentioning. **Educational** attainment also appears to negatively influence diabetes risk, as individuals with lower educational levels (Up to 8th Grade) have the highest diabetes percentage, with an average of 55 years, whereas those with a college degree have the lowest prevalence and a lower average age of 47 years.  
 
-Both analysis, result in the same conclusion as per the percentages of diabetic people on both **Smoking Status** and **Gender**, regardless the addition of the cholesterol. Those graphs indicate only modest differences, with a slightly higher percentage of diabetics currently Smoking and no differences at all from the **Gender** point of view. Results on a much bigger sample might have given stronger separation for the **Smoking Status** of the participants.
+**Marital status** shows another meaningful pattern. The widowed category exhibits the highest proportion of diabetes cases (21.4%), which may reflect the older age distribution of widowed individuals, and in non-elderly cases, the potential impact of emotional stress or reduced health prioritization following loss. Employment status reveals a similar trend, individuals not currently working show a diabetes prevalence more than twice that of those who are employed (15% vs 7%), possibly due to differences in income, healthcare access and health maintenance behaviors. It is not possible to tell exactly if there really is a difference in income, since the dataset in use does not provide exact income information, so that statement is really a conjecture. **Self-rated health status** further supports the expected pattern, as participants who described their general health as **"Poor"**, demonstrated the highest diabetes percentage (43,7%), even though their absolute number of observations is relatively small. Similarly, higher depression levels are associated with a greater prevalence of diabetes, suggesting a possible psychosocial link. Finally, **Physical Activity** appears to play a protective role against diabetes, as the proportion among those that are physically inactive (13.5%) is more than double in size than those reporting regular physical activity (6.6%).
 
-The descriptive statistics show that diabetic individuals tend to be older (59.1 ± 14.7 vs 35.9 ± 21.3) and have higher **BMI** (32.6 ± 8.2 vs 26.2 ± 7.1) compared to non-diabetics, while Total Cholesterol levels are similar between the two groups (4.8 ± 1.1 vs 4.9 ± 1.1).
+### 3.2 Descriptive Statistics On Continuous Variables
+Here, you'll read the descriptive analysis of continuous variables on the summary statistics and distribution plots created, stratified by diabetes status. The distributions and summary statistics of continuous variables by diabetes status provide insight into the demographic and clinical characteristics for the observations of the dataset.  
 
+Overall, individuals with diabetes have the tendency to be older, heavier, and have higher BMI and cholesterol levels compared with non diabetics. These differences are visually evident in the distribution plots and numerically supported by the **mean ± standard deviation** values of each variable.  
 
-### 3.2 Inferential Statistics
-t-tests were conducted to evaluate differences in means between diabetic and non-diabetic groups. A p-value below 0.05 indicates a statistically significant difference between diabetic and non-diabetic groups.
+**Age** shows a clear distinction between the two groups. The majority of participants without diabetes include a younger range of ages, on the contrary with diabetics that seems to shift toward older ages. **BMI** and **Weight** display similar patterns, with diabetic participants presenting higher averages, indicating greater levels of obesity. **Height** on the other hand, exhibits nearly identical distribution across both groups, suggesting that stature does not have a meaningful relationship with diabetes status.  
 
-- **Age** is significantly higher among diabetic individuals (*p-value*<0.001).
-- **BMI** is significantly higher among diabetic individuals (*p-value*<0.001).
-- **TotChol** shows a weaker association with diabetes compared to **Age** and **BMI**,although the difference between diabetics and non-diabetics is statistically significant. (*p-value*=0.035)
-
-
-### 3.3 Logistic Regression Models
-Two logistic regression models were fitted:
-  
-- **Model 1 (Without TotChol)**:
-**Age** and **BMI** are strong positive predictors of diabetes. **Gender** and **Smoking status** contribute, but with smaller effect sizes.
-
-- **Model 2 (With TotChol)**:
-Including **Cholesterol** does not change coefficients or any other predictors meaningfully. **Cholesterol** itself is not a strong independent predictor of diabetes.
-
-
-Model comparison using *AIC*,*AnOVa* and *likelihood ratio testing* suggests that **adding cholesterol does not meaningfully improve model fit**.
-
-Both logistic regression models confirm that **Age** and **BMI** are the strongest predictors of diabetes, with each one-year increase in age raising the odds by ~5.9% and each one-unit increase in BMI raising the odds by ~10%. Male gender has a moderate positive effect, whereas smoking status shows small, non-significant effects relative to the reference category 'No'. In model 2, adding **TotChol** shows a statistically significant association (OR=0.74, 95% CI: 0.68-0.81), indicating slightly lower odds of diabetes with higher cholesterol levels, although its practical effect is minimal. These findings are consistent with the confidence intervals, AIC, and likelihood ratio test results, suggesting that including cholesterol does not meaningfully improve model fit.
-
-
-
-
-### 3.4 ROC Analysis
-ROC curves were generated for both models:
-- **Model 1** (Without cholesterol) achieved an AUC of about *[0.843]*.
-- **Model 2** (With cholesterol) achieved an AUC of about *[0.847]*.
-
-Both models demonstrate good discrimination (AUC>0.8), and the minimal increase from adding cholesterol confirms its limited practical contribution to predictive accuracy.
-
-The curves overlap substantially, and the AUC values differ only a tiny amount, confirming that the inclusion of cholesterol provides only a little gain in predictive performance, as said previously.
-
+**Total cholesterol** levels are slightly higher and more variable among diabetic individuals, a pattern often observed in people with diabetes due to changes in fat metabolism. **Pulse** distributions are comparable between the groups, with no substantial difference in average values, indicating limited relevance of resting heart rate in differentiating diabetes status. **Sleep Hours Per Night** are approximately normally distributed, with a subtle shift showing that diabetic participants report slightly fewer hours of sleep on average than those without diabetes.  
 
 ---
 
-## 4. Conclusion
-In conclusion, this study/project demonstrates that **Age** and **BMI** are key predictors of diabetes, while **Gender** and **Smoking Status** have smaller, non-significant effects. Including **Total Cholesterol** provides little additional predictive value, despite its statistical significance.
+## 4. Sensitivity Analysis
+**Sensitivity Analysis** is conducted, to assess the robustness and stability of the statistical findings obtained from the logistic regression models. In the context of this project, it allows the evaluation of whether the inclusion or exclusion of **Total Cholesterol** influences the model's ability to predict diabetes and the strength of the associations between predictors and diabetes risk.  
 
-Future research could explore additional clinical and lifestyle factors, such as diet, physical activity or genetic markers, to better understand diabetes risk and improve predictive models.
+The main goal of creating several model versions (Core,Adjusted,Stepwise) is to check whether our results stay consistent under different conditions. In simple terms, this approach helps ensure that the relationships observed between predictors and diabetes are not affected by how the model is specified or by overlap between variables. By comparing models with and without certain factors and by examining measures such as **Odds Ratios, VIF Values, Hosmer-Lemeshow Goodness-Of-Fit Tests and ROC-AUC Scores**, a conclusion can be drawn regarding the stability and reliability of each predictor across different model settings. The expected outcome is a clearer understanding of which variables truly drive the likelihood of having diabetes within the population.
 
-Overall, the findings emphasize the relevance of **Age** and **BMI** in assessing diabetes risk in population-based datasets, while highlighting the limitations of cross-sectional analysis in establishing causality.
 
-Limitations of this study include the cross-sectional nature of the **NHANES**, which prevents causal inference. Finally, other potential confounders, such as physical activity or diet, were not included in this analysis and could potentially influence the associations observed.
+### 4.1 Logistic Regression Models
+Since the **Diabetes** outcome is binary (Yes/No), logistic regression was chosen as the most appropriate modeling approach. Logistic regression allows the estimation of the probability of having diabetes based on a set of demographic and clinical predictors, expressed in terms of **Odds Ratios** (ORs).  
+
+To evaluate the influence of Total Cholesterol (TotChol) and other potential confounding factors, four main models were developed, followed by a Stepwise refinement:  
+
+- **Core Model (No Cholesterol)**: Includes Age,Gender,BMI and Smoking Status.  
+- **Core Model (With Cholesterol)**: Adds Total Cholesterol to the core model.  
+- **Adjusted Model (No Cholesterol)**: Extends the core model by adding Race,Education,Physical Activity,Depression and Self-Rated Health.  
+- **Adjusted Model (With Cholesterol)**: Same as above, but including Total Cholesterol.  
+- **Stepwise Adjusted Model (With Cholesterol)**: Automatically selects predictors using AIC-based Stepwise selection.  
+
+The choice of variables in each model followed a logical and realistic approach. The Core Models include **Age,Gender,BMI** and **Smoking Status** because these are well-known and commonly studied factors linked to diabetes. They represent the main demographic and physical characteristics that influence the likelihood of developing the disease.  
+The Adjusted Models builds on that foundation by adding variables that could capture broader social,behavioral and psychological factors which may also affect diabetes risk or interact with the core predictors.  
+Finally Stepwise selection (in Both Directions) was used to provide flexibility in adding or removing variables for the best AIC performance. It was applied only to the Adjusted Model (With Cholesterol), as this was the most comprehensive version and therefore the best candidate for optimization and model simplification.  
+
+In the Core Models, both **Age** and **BMI** show strong positive associations with diabetes. For each additional year of age, participants have about **6%** higher odds having diabetes (OR=1.06), while every one unit increase in BMI raises the odds by **9-10%**. These results coexist with the conclusions already made in previous chapters, that older and heavier individuals are more likely to have diabetes.  
+Among categorical predictors, **Male** participants have a **48%** highers odds of diabetes than females in the model without cholesterol, and it's reduced to **34%** after including **Total Cholesterol**. This reduction suggests that cholesterol partially explains gender differences in diabetes risk, though males remain significantly more likely to have the disease. The Odds Ratio for Total Cholesterol (OR=0.75) indicates an inverse association, meaning higher cholesterol levels are linked with lower odds of diabetes. However, realistically this doesn't make sense, which means that the conclusion on that imply an effect of diabetes management, such as cholesterol-lowering medication or dietary changes. Lastly, **Smoking Status** (OR<1) suggests lower odds of diabetes compared to non-smokers, but this result was not statistically significant (95% CI indludes 1). This pattern likely arises from reverse causation and confounding. Individuals diagnosed with diabetes are more likely to quit smoking, and current smokers in the dataset tend to be younger and healthier.  
+
+With the addition of demographic,behavioral and psychological variables on the Adjusted Models, the main predictors **Age,BMI** and **Gender** remained statistically significant and directionally consistent with the core models. Only **BMI Odds Ratio** showed a small reduction compared to the Core Models, getting stable at **8%**. Among those newly added variables, **Self-Rated Health** (HealthGen) showed the strongest association. Participants reporting **Poor** health had over **SIX** times higher odds of diabetes compared to those reporting excellent health, confirming its strong predictive value. **Depression** also appeared relevant. Those reporting frequent depressive symptoms had lower odds (OR<1), which may reflect underlying health perception bias or treatment effects. Other predictors, such as **Race,Education and Physical Activity** showed weaker or non-significant (95% CI includes 1) associations.  
+
+The Stepwise Adjusted Model retained nearly the same predictors as the full adjusted model and produced almost identical coefficients. This consistency reinforces the stability of the findings and indicates that the adjusted model with cholesterol is the most efficient specification.  
+
+
+
+### 4.2 Model Evaluation and Diagnostics
+To compute the reliability, stability and predictive ability of the logistic regression models, several diagnostic and performance tests were used, like **Likelihood Ratio Tests, Multicollinearity checks (VIF), goodness-of-fit tests (Hosmer-Lemeshow) and ROC-AUC analysis**.  
+
+The **Likelihood Ratio Test** compared each model pair with and without **Total Cholesterol**, in both **Core** and **Adjusted Models**. The inclusion in both cases led to a significant reduction on the residual deviance (~41 and 34 points, both p<0.0001). This indicates that **Total Cholesterol** provides additional explanatory power for diabetes status beyond other predictors, improving the overall model fit.  
+
+**Variance Inflation Factors** (VIF) were examined to check correlation between variables. All VIF and scaled GVIF values were below **1.4** , which is well withing acceptable thresholds (<5), confirming non-existing correlation between predictors and the stability interpretability of the coefficient estimations.  
+
+The **Hosmer-Lemeshow Goodness-Of-Fit Test** was used to assess how well the predictive probabilities align with the observed outcomes. A p-value greater than **0.05** indicates a good fit. The results of the test for all models (p<0.05) suggest some deviation between observed and predictive frequencies, which is common in large samples, such as the one the used dataset has, where the test becomes overly sensitive. Considering this and the strong predictive metrics, these results do not indicate meaningful model misfit.  
+
+Predictive accuracy was evaluated through **Receiver Operating Characteristics** (ROC) Curves and the **Area Under The Curve** (AUC) statistic. All models achieved AUC>0.80, demonstrating good discrimination between diabetic and non-diabetic participants. The inclusion of cholesterol slightly increased AUC values, and the adjusted models outperformed the core ones:  
+- Core (No Chol)=0.812  
+- Core (With Chol)=0.818  
+- Adjusted (No Chol)=0.846  
+- Adjusted (With Chol)=0.851  
+- Stepwise Adjusted (With Chol)=0.851  
+
+The results show that the **Stepwise** model achieved the same predictive capacity as the full Adjusted Model, confirming that simplifying the model did not reduce performance.  
+
+Across all five **ROC** curves, a similar overall pattern is observed, with each model's curve lying clearly above the diagonal reference line. This indicates that all models perform substantially better than random classification in distinguishing individuals with and without diabetes. The Core Models (blue and orange lines) lie slightly below the Adjusted and Stepwise models, which means that the simpler models are less effective. The Stepwise model almost completely overlaps the adjusted model with cholesterol added, which once again reinforces earlier findings, that the Adjusted Model with cholesterol added is almost the perfect model.  
+
 
 
 
 ---
 
+## 5. Conclusion
+This project explored how demographic, behavioral and clinical factors influence the likelihood of having diabetes using data from the **NHANES** survey. The results of this analysis identified that **Age,BMI,Gender** and **Self-Rated Health** as the most consistent and influential predictors of diabetes across all model configurations, confirming that older,heavier,male and poor health individuals are more likely to have diabetes. The inclusion of **Total Cholesterol** modestly improved model performance, though its inverse association likely reflects the effects of diabetes management rather than a true protective role. All models demonstrated strong predictive accuracy and no evidence of multicollinearity, with the **Adjusted Model With Cholesterol** emerging as the most robust and balanced specification. While the cross-sectional nature of the data limits causal interpretation, these findings reinforce the importance of demographic and lifestyle factors in diabetes risk and highlight the value of maintaining healthy body weight and overall wellbeing as key strategies in diabetes prevention.
+
+---
 
 
-## Code / Outputs 
+
+## 6. Code / Outputs 
 
 ```{r setup, message=FALSE, warning=FALSE}
 #install.packages("NHANES")
@@ -134,235 +174,754 @@ library(gridExtra)
 library(pROC)
 library(grid)
 library(knitr)
-
+library(tidyverse)
+library(ResourceSelection)
+library(car)
+library(kableExtra)
 
 data<-NHANES
-myvars<-c("Diabetes","Age","Gender","BMI","SmokeNow","TotChol")
-new_data<-data[,myvars]
+myvars<-c("Diabetes","Age","Gender","BMI","SmokeNow","TotChol","AgeDecade","Race1","Education","MaritalStatus","HHIncome","HomeOwn","Work","Weight","Height","Pulse","HealthGen","Depressed","SleepHrsNight","PhysActive","HardDrugs")
+data<-data[,myvars]
+data<-data[!is.na(data$Diabetes) & !is.na(data$BMI) & !is.na(data$SleepHrsNight) & !is.na(data$Pulse) & !is.na(data$HHIncome),]
+data$AgeDecade <- as.character(data$AgeDecade)
+data$AgeDecade <- ifelse(is.na(data$AgeDecade) & data$Age < 10, "0-9",
+                    ifelse(is.na(data$AgeDecade) & data$Age < 20, "10-19",
+                      ifelse(is.na(data$AgeDecade) & data$Age < 30, "20-29",
+                        ifelse(is.na(data$AgeDecade) & data$Age < 40, "30-39",
+                          ifelse(is.na(data$AgeDecade) & data$Age < 50, "40-49",
+                            ifelse(is.na(data$AgeDecade) & data$Age < 60, "50-59",
+                              ifelse(is.na(data$AgeDecade) & data$Age < 70, "60-69",
+                                ifelse(is.na(data$AgeDecade) & data$Age >= 70, "70+",
+                                  data$AgeDecade))))))))
+data$AgeDecade<-as.factor(data$AgeDecade)
+levels(data$AgeDecade) <- trimws(levels(data$AgeDecade))
+data$AgeDecade <- droplevels(data$AgeDecade)
+cat_vars <- c("SmokeNow","Education","HealthGen",
+              "Depressed","HomeOwn","MaritalStatus","HardDrugs")
 
-# NA observations for Diabetes and BMI are removed 
-new_data<-new_data[!is.na(new_data$Diabetes) & !is.na(new_data$BMI),]
+for (v in cat_vars) {
+  data[[v]] <- as.character(data[[v]])        
+  data[[v]][is.na(data[[v]])] <- "Unknown"    
+  data[[v]] <- factor(data[[v]])                         
+}
 
-# Categorical variable SmokeNow: NA -> "Unknown"
-new_data$SmokeNow<-as.character(new_data$SmokeNow)
-new_data$SmokeNow[is.na(new_data$SmokeNow)]<-"Unknown"
-new_data$SmokeNow<-factor(new_data$SmokeNow)
+# Dataset creation
+cat_vars <- c("SmokeNow","Gender","AgeDecade","Race1","Education",
+              "MaritalStatus","HHIncome","HomeOwn","Work",
+              "HealthGen","Depressed","PhysActive","HardDrugs")
 
-# Datasets creation
-data_no_chol<-new_data[,!(names(new_data) %in% "TotChol")]
-data_chol<-new_data
-median_chol<-median(data_chol$TotChol,na.rm=TRUE)
-data_chol$TotChol[is.na(data_chol$TotChol)]<-median_chol
+props <- data %>% 
+  select(all_of(cat_vars), Diabetes) %>%
+  pivot_longer(-Diabetes, names_to = "Variable", values_to = "Level") %>%
+  count(Variable, Level, Diabetes, name = "n") %>%
+  group_by(Variable, Level) %>%
+  mutate(prop = n / sum(n)) %>%
+  ungroup()
+
+```{r categorical_plots, fig.width=14, fig.height=10, message=FALSE, warning=FALSE}
+
+#SmokeNow
+props %>% 
+  filter(Variable == "SmokeNow") %>% 
+  kable(col.names = c("Variable","Level","Diabetes","n","Prop"),
+        caption="<div style='text-align:center; white-space:nowrap; font-weight:bold;'>Proportion of Diabetes by Smoking Status</div>",
+    escape = FALSE) %>%
+  kable_styling(full_width=FALSE,position="center") %>%
+  add_header_above(c(" " = 5)) %>%
+  footnote(general_title = "")
+props %>% 
+  filter(Variable == "SmokeNow") %>%
+  ggplot(aes(x = Level, y = prop, fill = Diabetes)) +
+  geom_col(position = position_dodge(width = 0.9)) +
+  geom_text(
+    aes(label = paste0(round(prop * 100, 1), "%")),   
+    position = position_dodge(width = 0.9),
+    vjust = -0.3,
+    size = 3.5,
+    color = "black"
+  ) +
+  scale_fill_manual(values = c("Yes" = "#2C3E50", "No" = "#E67E22")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(
+    title = "Proportion of Diabetes by Current Smoking Status",
+    x = "Smoking Status",
+    y = "Proportion"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),  
+    axis.text.x = element_text(angle = 0, vjust = 0.8)
+  )
+
+#AgeDecade
+props %>% 
+  filter(Variable == "AgeDecade") %>% 
+kable(col.names = c("Variable","Level","Diabetes","n","Prop"),
+        caption="<div style='text-align:center; white-space:nowrap; font-weight:bold;'>Proportion of Diabetes by Age Decade</div>",
+    escape = FALSE) %>%
+  kable_styling(full_width=FALSE,position="center")
+props %>% 
+  filter(Variable == "AgeDecade") %>%
+  ggplot(aes(x = Level, y = prop, fill = Diabetes)) +
+  geom_col(position = position_dodge(width = 0.9)) +
+  geom_text(
+    aes(label = paste0(round(prop * 100, 1), "%")),   
+    position = position_dodge(width = 0.9),
+    vjust = -0.3,
+    size = 3.5,
+    color = "black"
+  ) +
+  scale_fill_manual(values = c("Yes" = "#2C3E50", "No" = "#E67E22")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(
+    title = "Proportion of Diabetes by Age Decade",
+    x = "Age Decade",
+    y = "Proportion"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),  
+    axis.text.x = element_text(angle = 0, vjust = 0.8)
+  )
+
+#Race1
+props %>% 
+  filter(Variable == "Race1") %>% 
+kable(col.names = c("Variable","Level","Diabetes","n","Prop"),
+        caption="<div style='text-align:center; white-space:nowrap; font-weight:bold;'>Proportion of Diabetes by Race</div>",
+    escape = FALSE) %>%
+  kable_styling(full_width=FALSE,position="center") %>%
+  add_header_above(c(" " = 5)) %>%
+  footnote(general_title = "")
+props %>% 
+  filter(Variable == "Race1") %>%
+  ggplot(aes(x = Level, y = prop, fill = Diabetes)) +
+  geom_col(position = position_dodge(width = 0.9)) +
+  geom_text(
+    aes(label = paste0(round(prop * 100, 1), "%")),   
+    position = position_dodge(width = 0.9),
+    vjust = -0.3,
+    size = 3.5,
+    color = "black"
+  ) +
+  scale_fill_manual(values = c("Yes" = "#2C3E50", "No" = "#E67E22")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(
+    title = "Proportion of Diabetes by Race",
+    x = "Race",
+    y = "Proportion"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),  
+    axis.text.x = element_text(angle = 0, vjust = 0.8)
+  )
+
+#Education
+props %>% 
+  filter(Variable == "Education") %>% 
+kable(col.names = c("Variable","Level","Diabetes","n","Prop"),
+        caption="<div style='text-align:center; white-space:nowrap; font-weight:bold;'>Proportion of Diabetes by Education Level</div>",
+    escape = FALSE) %>%
+  kable_styling(full_width=FALSE,position="center") %>%
+  add_header_above(c(" " = 5)) %>%
+  footnote(general_title = "")
+props %>% 
+  filter(Variable == "Education") %>%
+  ggplot(aes(x = Level, y = prop, fill = Diabetes)) +
+  geom_col(position = position_dodge(width = 0.9)) +
+  geom_text(
+    aes(label = paste0(round(prop * 100, 1), "%")),   
+    position = position_dodge(width = 0.9),
+    vjust = -0.3,
+    size = 3.5,
+    color = "black"
+  ) +
+  scale_fill_manual(values = c("Yes" = "#2C3E50", "No" = "#E67E22")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(
+    title = "Proportion of Diabetes by Education",
+    x = "Education",
+    y = "Proportion"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),  
+    axis.text.x = element_text(angle = 0, vjust = 0.8)
+  )
+
+x<-aggregate(Age~Education,mean,data=data)
+kable(x,col.names=c("Edcuation Level","Mean Age"),caption="<span style='white-space:nowrap;'>Mean Age On Every Educational Level</span>",
+    escape = FALSE) %>%
+  kable_styling(full_width=FALSE,position="center") %>%
+  add_header_above(c(" " = 2)) %>%
+  footnote(general_title = "")
+
+#MaritalStatus
+props %>% 
+  filter(Variable == "MaritalStatus") %>% 
+kable(col.names = c("Variable","Level","Diabetes","n","Prop"),
+        caption="<div style='text-align:center; white-space:nowrap; font-weight:bold;'>Proportion of Diabetes by Marital Status</div>",
+    escape = FALSE) %>%
+  kable_styling(full_width=FALSE,position="center") %>%
+  add_header_above(c(" " = 5)) %>%
+  footnote(general_title = "")
+props %>% 
+  filter(Variable == "MaritalStatus") %>%
+  ggplot(aes(x = Level, y = prop, fill = Diabetes)) +
+  geom_col(position = position_dodge(width = 0.9)) +
+  geom_text(
+    aes(label = paste0(round(prop * 100, 1), "%")),   
+    position = position_dodge(width = 0.9),
+    vjust = -0.3,
+    size = 3.5,
+    color = "black"
+  ) +
+  scale_fill_manual(values = c("Yes" = "#2C3E50", "No" = "#E67E22")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(
+    title = "Proportion of Diabetes by Marital Status",
+    x = "Marital Status",
+    y = "Proportion"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),  
+    axis.text.x = element_text(angle = 0, vjust = 0.8)
+  )
+
+#Work
+props %>% 
+  filter(Variable == "Work") %>% 
+kable(col.names = c("Variable","Level","Diabetes","n","Prop"),
+        caption="<div style='text-align:center; white-space:nowrap; font-weight:bold;'>Proportion of Diabetes by Working Status</div>",
+    escape = FALSE) %>%
+  kable_styling(full_width=FALSE,position="center") %>%
+  add_header_above(c(" " = 5)) %>%
+  footnote(general_title = "")
+props %>% 
+  filter(Variable == "Work") %>%
+  ggplot(aes(x = Level, y = prop, fill = Diabetes)) +
+  geom_col(position = position_dodge(width = 0.9)) +
+  geom_text(
+    aes(label = paste0(round(prop * 100, 1), "%")),   
+    position = position_dodge(width = 0.9),
+    vjust = -0.3,
+    size = 3.5,
+    color = "black"
+  ) +
+  scale_fill_manual(values = c("Yes" = "#2C3E50", "No" = "#E67E22")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(
+    title = "Proportion of Diabetes by Work Status",
+    x = "Work Status",
+    y = "Proportion"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),  
+    axis.text.x = element_text(angle = 0, vjust = 0.8)
+  )
+
+#HealthGen
+props %>% 
+  filter(Variable == "HealthGen") %>% 
+kable(col.names = c("Variable","Level","Diabetes","n","Prop"),
+        caption="<<div style='text-align:center; white-space:nowrap; font-weight:bold;'>Proportion of Diabetes by Self-Rated Health Status</div>",
+    escape = FALSE) %>%
+  kable_styling(full_width=FALSE,position="center") %>%
+  add_header_above(c(" " = 5)) %>%
+  footnote(general_title = "")
+props %>% 
+  filter(Variable == "HealthGen") %>%
+  ggplot(aes(x = Level, y = prop, fill = Diabetes)) +
+  geom_col(position = position_dodge(width = 0.9)) +
+  geom_text(
+    aes(label = paste0(round(prop * 100, 1), "%")),   
+    position = position_dodge(width = 0.9),
+    vjust = -0.3,
+    size = 3.5,
+    color = "black"
+  ) +
+  scale_fill_manual(values = c("Yes" = "#2C3E50", "No" = "#E67E22")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(
+    title = "Proportion of Diabetes by Health Status",
+    x = "Health Status",
+    y = "Proportion"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),  
+    axis.text.x = element_text(angle = 0, vjust = 0.8)
+  )
+
+#Depressed
+props %>% 
+  filter(Variable == "Depressed") %>% 
+kable(col.names = c("Variable","Level","Diabetes","n","Prop"),
+        caption="<div style='text-align:center; white-space:nowrap; font-weight:bold;'>Proportion of Diabetes by Depression Status</div>",
+    escape = FALSE) %>%
+  kable_styling(full_width=FALSE,position="center") %>%
+  add_header_above(c(" " = 5)) %>%
+  footnote(general_title = "")
+props %>% 
+  filter(Variable == "Depressed") %>%
+  ggplot(aes(x = Level, y = prop, fill = Diabetes)) +
+  geom_col(position = position_dodge(width = 0.9)) +
+  geom_text(
+    aes(label = paste0(round(prop * 100, 1), "%")),   
+    position = position_dodge(width = 0.9),
+    vjust = -0.3,
+    size = 3.5,
+    color = "black"
+  ) +
+  scale_fill_manual(values = c("Yes" = "#2C3E50", "No" = "#E67E22")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(
+    title = "Proportion of Diabetes by Depressed Status",
+    x = "Depression",
+    y = "Proportion"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),  
+    axis.text.x = element_text(angle = 0, vjust = 0.8)
+  )
+
+#PhysActive
+props %>% 
+  filter(Variable == "PhysActive") %>% 
+kable(col.names = c("Variable","Level","Diabetes","n","Prop"),
+        caption="<div style='text-align:center; white-space:nowrap; font-weight:bold;'>Proportion of Diabetes by Physical Activity</div>",
+    escape = FALSE) %>%
+  kable_styling(full_width=FALSE,position="center") %>%
+  add_header_above(c(" " = 5)) %>%
+  footnote(general_title = "")
+props %>% 
+  filter(Variable == "PhysActive") %>%
+  ggplot(aes(x = Level, y = prop, fill = Diabetes)) +
+  geom_col(position = position_dodge(width = 0.9)) +
+  geom_text(
+    aes(label = paste0(round(prop * 100, 1), "%")),   
+    position = position_dodge(width = 0.9),
+    vjust = -0.3,
+    size = 3.5,
+    color = "black"
+  ) +
+  scale_fill_manual(values = c("Yes" = "#2C3E50", "No" = "#E67E22")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(
+    title = "Proportion of Diabetes by Physical Activity Status",
+    x = "Physical Activity",
+    y = "Proportion"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),  
+    axis.text.x = element_text(angle = 0, vjust = 0.8)
+  )
+```{r continuous_plots, fig.width=14, fig.height=14, message=FALSE, warning=FALSE}
 # Continuous variables
-data_long_nochol<-pivot_longer(data_no_chol[,c("Diabetes","Age","BMI")],
-                                 cols=c("Age","BMI"),
-                                 names_to="Variable",
-                                 values_to="Value")
-
-data_long_chol<-pivot_longer(data_chol[,c("Diabetes","Age","BMI","TotChol")],
-                               cols=c("Age","BMI","TotChol"),
-                               names_to="Variable",
-                               values_to="Value")
-
-# Categorical variable: SmokeNow
-data_prop_nochol1<-data_no_chol %>%
-  group_by(SmokeNow,Diabetes) %>%
-  summarise(n=n(),.groups="drop") %>%
-  group_by(SmokeNow) %>%
-  mutate(prop=n/sum(n))
-
-data_prop_chol1<-data_chol %>%
-  group_by(SmokeNow,Diabetes) %>%
-  summarise(n=n(),.groups="drop") %>%
-  group_by(SmokeNow) %>%
-  mutate(prop=n/sum(n))
-kable(data.frame(data_prop_nochol1$SmokeNow,data_prop_nochol1$Diabetes,data_prop_nochol1$n,data_prop_nochol1$prop), 
-      col.names=c("SmokeNow","Diabetes","n","Prop"))
-
-# Categorical variable: Gender
-data_prop_nochol2<-data_no_chol %>%
-  group_by(Gender,Diabetes) %>%
-  summarise(n=n(),.groups="drop") %>%
-  group_by(Gender) %>%
-  mutate(prop=n/sum(n))
-kable(data.frame(data_prop_nochol2$Gender,data_prop_nochol2$Diabetes,data_prop_nochol2$n,data_prop_nochol2$prop), 
-      col.names=c("Gender","Diabetes","n","Prop"))
-
-data_prop_chol2<-data_chol %>%
-  group_by(Gender,Diabetes) %>%
-  summarise(n=n(),.groups="drop") %>%
-  group_by(Gender) %>%
-  mutate(prop=n/sum(n))
-
-
-# Continuous variables
-p1_nochol<-ggplot(data_long_nochol,aes(x=Value,fill=Diabetes)) +
-  geom_histogram(position="dodge",bins=30,color="black") +
-  facet_wrap(~Variable,scales="free_x") +
-  labs(title="Age,BMI Distribution (No TotChol)") 
-p1_nochol<-p1_nochol+theme(
-  plot.title=element_text(size=15,face="bold",hjust=0.5)
-)  
-
-p1_chol<-ggplot(data_long_chol,aes(x=Value,fill=Diabetes)) +
-  geom_histogram(position="dodge",bins=30,color="black") +
-  facet_wrap(~Variable,scales="free_x") +
-  labs(title="Age,BMI,TotChol Distribution") 
-p1_chol<-p1_chol+theme(
-  plot.title=element_text(size=15,face="bold",hjust=0.5)
-)   
-
-# Categorical variables
-p2_nochol<-ggplot(data_prop_nochol1,aes(x=SmokeNow,y=prop,fill=Diabetes)) +
-  geom_bar(stat="identity") +
-  geom_text(aes(label=scales::percent(prop,accuracy=1)),
-            position=position_stack(vjust=0.5)) +
-  scale_y_continuous(labels=percent_format()) +
-  labs(title="diabetes % VS smoking (No TotChol)",y="Percentage") 
-p2_nochol<-p2_nochol+theme(
-  plot.title=element_text(size=15,face="bold",hjust=0.5)
+data_long <- pivot_longer(
+  data[, c("Diabetes", "Age", "BMI", "Weight", "Height", "SleepHrsNight", "TotChol","Pulse")],
+  cols = -Diabetes,
+  names_to = "Variable",
+  values_to = "Value"
 )
 
-p2_chol<-ggplot(data_prop_chol1,aes(x=SmokeNow,y=prop,fill=Diabetes)) +
-  geom_bar(stat = "identity") +
-  geom_text(aes(label=scales::percent(prop,accuracy=1)),
-            position=position_stack(vjust=0.5)) +
-  scale_y_continuous(labels=percent_format()) +
-  labs(title="diabetes % VS smoking (With TotChol)",y="Percentage") 
-p2_chol<-p2_chol+theme(
-  plot.title=element_text(size=15,face="bold",hjust=0.5)
-)
-
-p3_nochol<-ggplot(data_prop_nochol2,aes(x=Gender,y=prop,fill=Diabetes)) +
-  geom_bar(stat="identity") +
-  geom_text(aes(label=scales::percent(prop,accuracy=1)),
-            position=position_stack(vjust=0.5)) +
-  scale_y_continuous(labels=percent_format()) +
-  labs(title="Diabetes % Vs Gender (No TotChol)",y="Percentage") 
-p3_nochol<-p3_nochol+theme(
-  plot.title=element_text(size=15,face="bold",hjust=0.5)
-)
-
-p3_chol<-ggplot(data_prop_chol2,aes(x=Gender,y=prop,fill=Diabetes)) +
-  geom_bar(stat="identity") +
-  geom_text(aes(label=scales::percent(prop,accuracy=1)),
-            position=position_stack(vjust=0.5)) +
-  scale_y_continuous(labels=percent_format()) +
-  labs(title="Diabetes % Vs Gender (With TotChol)",y="Percentage") 
-p3_chol<-p3_chol+theme(
-  plot.title=element_text(size=15,face="bold",hjust=0.5)
-)
-
-```{r distribution_plots,fig.width=15,fig.height=6,message=FALSE,warning=FALSE}
+data_binned <- data_long %>%
+  group_by(Variable, Diabetes) %>%
+  mutate(bin = cut(Value, breaks = 30)) %>%
+  group_by(Variable, Diabetes, bin) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  mutate(
+    bin_center = (as.numeric(sub("\\((.+),.*", "\\1", bin)) + 
+                  as.numeric(sub("[^,]*,([^]]*)\\]", "\\1", bin))) / 2
+  )
+ggplot(data_binned, aes(x = bin_center, y = count, fill = Diabetes, color = Diabetes)) +
+  geom_col(position = "dodge", alpha = 0.6) +
+  geom_line(aes(group = Diabetes), size = 1) +
+  facet_wrap(~Variable, scales = "free") +
+  scale_fill_manual(values = c("Yes" = "#2C3E50", "No" = "#E67E22")) +
+  scale_color_manual(values = c("Yes" = "#2C3E50", "No" = "#E67E22")) +
+  theme_minimal(base_size = 13) +
+  labs(
+    title = "Distribution of Continuous Variables by Diabetes Status",
+    x = "Value",
+    y = "Density"
+  ) +
+  theme(
+    plot.title = element_text(size = 15, face = "bold", hjust = 0.5),
+    legend.position = "top"
+  )
 
 
-#Distribution plots together 
-grid.arrange(p1_nochol,p1_chol,ncol=2)
-
-
-#Categorical variables plots combination
-grid.arrange(p2_nochol,p2_chol,ncol=1)
-grid.arrange(p3_nochol,p3_chol,ncol=1)
 
 # Continuous variables summary by Diabetes
-summary_table<-new_data %>%
+```{r summary_table, fig.width=20, out.width='100%', results='asis', message=FALSE, warning=FALSE}
+summary_table <- data %>%
   group_by(Diabetes) %>%
   summarise(
-    Age_mean=mean(Age,na.rm=TRUE),
-    Age_sd=sd(Age,na.rm=TRUE),
-    BMI_mean=mean(BMI,na.rm=TRUE),
-    BMI_sd=sd(BMI,na.rm=TRUE),
-    TotChol_mean=mean(TotChol,na.rm=TRUE),
-    TotChol_sd=sd(TotChol,na.rm=TRUE)
-  ) %>%
+    n=n(),
+    Age_mean = mean(Age, na.rm = TRUE),
+    Age_sd = sd(Age, na.rm = TRUE),
+    BMI_mean = mean(BMI, na.rm = TRUE),
+    BMI_sd = sd(BMI, na.rm = TRUE),
+    Weight_mean = mean(Weight, na.rm = TRUE),
+    Weight_sd = sd(Weight, na.rm = TRUE),
+    Height_mean = mean(Height, na.rm = TRUE),
+    Height_sd = sd(Height, na.rm = TRUE),
+    SleepHrsNight_mean = mean(SleepHrsNight, na.rm = TRUE),
+    SleepHrsNight_sd = sd(SleepHrsNight, na.rm = TRUE),
+    TotChol_mean = mean(TotChol, na.rm = TRUE),
+    TotChol_sd = sd(TotChol, na.rm = TRUE),
+    Pulse_mean = mean(Pulse, na.rm = TRUE),
+    Pulse_sd = sd(Pulse, na.rm = TRUE)
+  )
+
+summary_table_opt <- summary_table %>%
   mutate(
-    Age=paste0(round(Age_mean,1)," ± ",round(Age_sd,1)),
-    BMI=paste0(round(BMI_mean,1)," ± ",round(BMI_sd,1)),
-    TotChol=paste0(round(TotChol_mean,1)," ± ",round(TotChol_sd,1))
+    Age = paste0(round(Age_mean, 1), " ± ", round(Age_sd, 1)),
+    BMI = paste0(round(BMI_mean, 1), " ± ", round(BMI_sd, 1)),
+    Weight = paste0(round(Weight_mean, 1), " ± ", round(Weight_sd, 1)),
+    Height = paste0(round(Height_mean, 1), " ± ", round(Height_sd, 1)),
+    SleepHrsNight = paste0(round(SleepHrsNight_mean, 1), " ± ", round(SleepHrsNight_sd, 1)),
+    TotChol = paste0(round(TotChol_mean, 1), " ± ", round(TotChol_sd, 1)),
+    Pulse = paste0(round(Pulse_mean, 1), " ± ", round(Pulse_sd, 1))
   ) %>%
-  select(Diabetes,Age,BMI,TotChol)
-
-# Print nicely
-kable(summary_table,col.names=c("Diabetes","Age(Mean ± SD)","BMI(Mean ± SD)","TotChol(Mean ± SD)"))
-
-
-
-
-#Model withotu TotChol
-model1<-glm(Diabetes~Age+Gender+BMI+SmokeNow,
-              data=data_no_chol,family=binomial)
-
-#Model with TotChol
-model2<-glm(Diabetes~Age+Gender+BMI+SmokeNow+TotChol,
-              data=data_chol,family=binomial)
-
-#Coefficient comparison 
-exp(coef(model1))
-exp(coef(model2))
-confint(model1)
-confint(model2)
-
-#Goodness-of-fit comparison
-AIC(model1)
-AIC(model2)
-
-# Likelihood ratio test
-anova(model1,model2,test="Chisq")
-# Προβλέψεις πιθανοτήτων
-pred1<-predict(model1,type="response")
-pred2<-predict(model2,type="response")
-
-# ROC curves
-roc1<-roc(data_no_chol$Diabetes,pred1)
-roc2<-roc(data_chol$Diabetes,pred2)
-
-# AUC
-auc1<-auc(roc1)
-auc2<-auc(roc2)
-
-print(paste("AUC without TotChol:",round(auc1,3)))
-print(paste("AUC with TotChol:",round(auc2,3)))
+  select(Diabetes, n, Age, BMI, Weight, Height, SleepHrsNight, TotChol, Pulse)
+kable(
+  summary_table_opt,
+  col.names = c(
+    "Diabetes",
+    "n",
+    "Age",
+    "BMI",
+    "Weight",
+    "Height",
+    "Sleep Hours/Night",
+    "Total Cholesterol",
+    "Pulse"
+  ),
+  caption = "<div style='text-align:center; white-space:nowrap; font-weight:bold;'>Mean ± SD for Continuous Variables</div>",
+  escape = FALSE
+) %>%
+  kable_styling(full_width = FALSE, position = "center") %>%
+  column_spec(1:9, extra_css = "text-align:center;") %>%
+  add_header_above(c(" " = 9)) %>%
+  footnote(general_title = "")
 
 
+summary_long <- summary_table %>%
+  select(Diabetes, ends_with("_mean"), ends_with("_sd")) %>%
+  tidyr::pivot_longer(
+    cols = -Diabetes,
+    names_to = c("Variable", ".value"),
+    names_pattern = "(.*)_(mean|sd)"
+)
+```{r summary_cont_plot,height=16,width=14,message=FALSE, warning=FALSE}
+
+ggplot(summary_long, aes(x = Variable, y = mean, fill = Diabetes)) +
+  geom_col(position = position_dodge(width = 0.7), width = 0.6) +
+  geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd),
+                position = position_dodge(width = 0.7),
+                width = 0.2) +
+  scale_fill_manual(values = c("Yes" = "#2C3E50", "No" = "#E67E22")) +
+  coord_flip() +
+  theme_minimal(base_size = 13) +
+  labs(
+    title = "Mean ± SD of Continuous Variables by Diabetes Status",
+    x = "",
+    y = "Mean ± SD"
+  ) +
+  theme(
+    plot.title = element_text(size = 15, face = "bold", hjust = 0.5),
+    legend.position = "top"
+  )
+# ============================================
+#  Sensitivity Analysis: 4 Logistic Models
+# ============================================
+#sum(is.na(data$TotChol))  = 329 NA's which is around 4.84% (close to 5%) the observations the dataset has 
+
+# ---- Model definitions ----
+data_complete <- data %>% filter(!is.na(TotChol))
+
+# Core models
+model_core_nochol <- glm(Diabetes ~ Age + Gender + BMI + SmokeNow,
+                         data = data_complete, family = binomial)
+
+model_core_withchol <- glm(Diabetes ~ Age + Gender + BMI + SmokeNow + TotChol,
+                           data = data_complete, family = binomial)
+
+# Adjusted models
+model_adj_nochol <- glm(Diabetes ~ Age + Gender + BMI + SmokeNow +
+                        Race1 + Education + PhysActive +
+                        Depressed + HealthGen,
+                        data = data_complete, family = binomial)
+
+model_adj_withchol <- glm(Diabetes ~ Age + Gender + BMI + SmokeNow +
+                          Race1 + Education + PhysActive +
+                          Depressed + HealthGen + TotChol,
+                          data = data_complete, family = binomial)
 
 
+# Odds Ratios with 95% CI for all models
+or_table <- function(model, name) {
+  conf <- suppressMessages(confint(model))
+  or_table <- data.frame(
+    Variable = names(coef(model)),
+    OR = exp(coef(model)),
+    Lower = exp(conf[, 1]),
+    Upper = exp(conf[, 2]),
+    row.names = NULL
+  )
+  kable(or_table, digits = 3,
+        caption = paste0("<span style='white-space:nowrap;'>Odds Ratios with 95% CI -", name, "</span>"),
+        escape = FALSE)
+} %>%
+  kable_styling(full_width = FALSE, position="center") %>%
+  add_header_above(c(" " = 4)) %>%
+  footnote(general_title = "")
 
-t1<-t.test(Age~Diabetes,data=data_chol)
-kable(data.frame(t1$statistic,t1$p.value),
-      col.names=c("t-statistic","p-value"))
-t2 <-t.test(BMI ~ Diabetes, data = data_chol)
-kable(data.frame(t2$statistic, t2$p.value), 
-      col.names = c("t-statistic","p-value"))
-t3<-t.test(TotChol~Diabetes,data=data_chol)
-kable(data.frame(t3$statistic,t3$p.value), 
-      col.names=c("t-statistic","p-value"))
+or_table(model_core_nochol,  "Core Model (No Chol)")
+or_table(model_core_withchol, "Core Model (With Chol)")
+or_table(model_adj_nochol,   "Adjusted Model (No Chol)")
+or_table(model_adj_withchol, "Adjusted Model (With Chol)")
+
+# ---- Likelihood Ratio Tests ----
+anova_core <- anova(model_core_nochol, model_core_withchol, test="Chisq")
+anova_adj  <- anova(model_adj_nochol,  model_adj_withchol,  test="Chisq")
+
+anova_core_df <- data.frame(anova_core)
+anova_adj_df  <- data.frame(anova_adj)
+
+kable(anova_core_df,
+      caption = "<span style='white-space:nowrap;'>Likelihood Ratio Test: Core Models (Without vs With TotChol)</span>",
+      digits = 4) %>%
+  kable_styling(full_width = FALSE, position="center") %>%
+  add_header_above(c(" " = 5)) %>%
+  footnote(general_title = "")
+
+kable(anova_adj_df,
+      caption = "<span style='white-space:nowrap;'>Likelihood Ratio Test: Adjusted Models (Without vs With TotChol)</span>",
+      digits = 4) %>%
+  kable_styling(full_width = FALSE, position="center") %>%
+  add_header_above(c(" " = 5)) %>%
+  footnote(general_title = "")
 
 
+#Variance Inflation Factor (VIF)
+safe_vif <- function(model) {
+  v <- tryCatch(car::vif(model), error = function(e) NULL)
+  if (is.null(v)) return(data.frame(Variable = NA, GVIF = NA, Df = NA, VIF_Scaled = NA))
+  
+  if (is.matrix(v)) {
+    v_df <- as.data.frame(v)
+    v_df <- tibble::rownames_to_column(v_df, "Variable")
+    if (all(c("GVIF", "Df") %in% names(v_df))) {
+      v_df$VIF_Scaled <- (v_df$GVIF)^(1 / (2 * v_df$Df))
+    } else {
+      v_df$GVIF <- v_df[,1]
+      v_df$Df <- 1
+      v_df$VIF_Scaled <- v_df$GVIF
+    }
+  } else {
+    v_df <- data.frame(Variable = names(v), GVIF = as.numeric(v), Df = 1, VIF_Scaled = as.numeric(v))
+  }
+  v_df
+}
 
-# ROC plot as ggplot object to be inserted in grid.arrange
-roc_df1<-data.frame(
-  fpr=1-roc1$specificities,
-  tpr=roc1$sensitivities,
-  Model="Without TotChol"
+# --- Apply to models ---
+vif_core_nochol_df  <- safe_vif(model_core_nochol)
+vif_core_withchol_df <- safe_vif(model_core_withchol)
+vif_adj_nochol_df   <- safe_vif(model_adj_nochol)
+vif_adj_withchol_df <- safe_vif(model_adj_withchol)
+
+kable(vif_core_nochol_df,
+      caption = "<span style='white-space:nowrap;'>Variance Inflation Factor (and GVIF) - Core Model (No Chol)</span>",
+      digits = 3) %>%
+  kable_styling(full_width = FALSE, position="center") %>%
+  add_header_above(c(" " = 5)) %>%
+  footnote(general_title = "")
+
+kable(vif_core_withchol_df,
+      caption = "<span style='white-space:nowrap;'>Variance Inflation Factor (and GVIF) - Core Model (With Chol)</span>",
+      digits = 3) %>%
+  kable_styling(full_width = FALSE, position="center") %>%
+  add_header_above(c(" " = 5)) %>%
+  footnote(general_title = "")
+
+kable(vif_adj_nochol_df,
+      caption = "<span style='white-space:nowrap;'>Variance Inflation Factor (and GVIF) - Adjusted Model (No Chol)</span>",
+      digits = 3) %>%
+  kable_styling(full_width = FALSE, position="center") %>%
+  add_header_above(c(" " = 5)) %>%
+  footnote(general_title = "")
+
+kable(vif_adj_withchol_df,
+      caption = "<span style='white-space:nowrap;'>Variance Inflation Factor (and GVIF) - Adjusted Model (With Chol)</span>",
+      digits = 3) %>%
+  kable_styling(full_width = FALSE, position="center") %>%
+  add_header_above(c(" " = 5)) %>%
+  footnote(general_title = "")
+
+#Stepwise Model Selection (AIC-based)
+step_adj_withchol <- step(model_adj_withchol,
+                          direction = "both",
+                          trace = FALSE)
+
+conf_step <- suppressMessages(confint(step_adj_withchol))
+or_table_step <- data.frame(
+  Term = names(coef(step_adj_withchol)),
+  OR = round(exp(coef(step_adj_withchol)), 3),
+  Lower = round(exp(conf_step[, 1]), 3),
+  Upper = round(exp(conf_step[, 2]), 3),
+  row.names = NULL
 )
 
-roc_df2<-data.frame(
-  fpr=1-roc2$specificities,
-  tpr=roc2$sensitivities,
-  Model="With TotChol"
+kable(or_table_step,
+      digits = 3,
+      caption = "<span style='white-space:nowrap;'>Stepwise Selected Model (Adjusted With Chol) — Odds Ratios with 95% CI</span>",
+      escape = FALSE) %>%
+  kable_styling(full_width = FALSE, position = "center") %>%
+  add_header_above(c(" " = 4)) %>%
+  footnote(general_title = "")
+
+
+
+#Hosmer–Lemeshow Goodness-of-Fit
+
+hoslem_core_nochol  <- hoslem.test(as.numeric(data_complete$Diabetes)-1, fitted(model_core_nochol))
+hoslem_core_withchol <- hoslem.test(as.numeric(data_complete$Diabetes)-1, fitted(model_core_withchol))
+hoslem_adj_nochol   <- hoslem.test(as.numeric(data_complete$Diabetes)-1, 
+fitted(model_adj_nochol))
+hoslem_adj_withchol <- hoslem.test(as.numeric(data_complete$Diabetes)-1, fitted(model_adj_withchol))
+hoslem_step_adj_withchol <- hoslem.test(as.numeric(data_complete$Diabetes)-1, fitted(step_adj_withchol))
+
+kable(data.frame(
+  Model = c("Core - No Chol", 
+            "Core - With Chol", 
+            "Adjusted - No Chol", 
+            "Adjusted - With Chol", 
+            "Stepwise Adjusted - With Chol"),  
+  ChiSq = c(hoslem_core_nochol$statistic,
+            hoslem_core_withchol$statistic,
+            hoslem_adj_nochol$statistic,
+            hoslem_adj_withchol$statistic,
+            hoslem_step_adj_withchol$statistic),
+  df = c(hoslem_core_nochol$parameter,
+         hoslem_core_withchol$parameter,
+         hoslem_adj_nochol$parameter,
+         hoslem_adj_withchol$parameter,
+         hoslem_step_adj_withchol$parameter),
+  p_value = c(hoslem_core_nochol$p.value,
+              hoslem_core_withchol$p.value,
+              hoslem_adj_nochol$p.value,
+              hoslem_adj_withchol$p.value,
+              hoslem_step_adj_withchol$p.value)
+), digits = 4,
+caption = "<span style='white-space:nowrap;'>Hosmer–Lemeshow Goodness-of-Fit Test (p > 0.05 indicates good fit)</span>",
+escape = FALSE) %>%
+  kable_styling(full_width = FALSE, position = "center") %>%
+  add_header_above(c(" " = 4)) %>%
+  footnote(general_title = "")
+
+# ---- ROC and AUC ----
+
+pred_core_nochol <- predict(model_core_nochol, type="response")
+pred_core_withchol <- predict(model_core_withchol, type="response")
+pred_adj_nochol <- predict(model_adj_nochol, type="response")
+pred_adj_withchol <- predict(model_adj_withchol, type="response")
+pred_step_adj_withchol <- predict(step_adj_withchol, type="response")
+
+roc_core_nochol <- roc(data_complete$Diabetes, pred_core_nochol)
+roc_core_withchol <- roc(data_complete$Diabetes, pred_core_withchol)
+roc_adj_nochol <- roc(data_complete$Diabetes, pred_adj_nochol)
+roc_adj_withchol <- roc(data_complete$Diabetes, pred_adj_withchol)
+roc_step_adj_withchol <- roc(data_complete$Diabetes, pred_step_adj_withchol)
+
+auc_core_nochol <- auc(roc_core_nochol)
+auc_core_withchol <- auc(roc_core_withchol)
+auc_adj_nochol <- auc(roc_adj_nochol)
+auc_adj_withchol <- auc(roc_adj_withchol)
+auc_step_adj_withchol <- auc(roc_step_adj_withchol)
+
+auc_table <- data.frame(
+  Model = c("Core - No Chol","Core - With Chol",
+            "Adjusted - No Chol","Adjusted - With Chol", "Stepwise Adjusted - With Chol"),
+  AUC = round(c(auc_core_nochol, auc_core_withchol,
+                auc_adj_nochol, auc_adj_withchol, auc_step_adj_withchol), 3)
 )
 
-roc_df<-rbind(roc_df1,roc_df2)
-
-p_roc<-ggplot(roc_df,aes(x=fpr,y=tpr,color=Model))+
-  geom_line(size=1.2)+
-  geom_abline(slope=1,intercept=0,linetype="dashed")+
-  labs(x="1-Specificity",y="Sensitivity") +
-  scale_color_manual(values=c("blue","red")) 
+kable(auc_table, caption = "<span style='white-space:nowrap;'>AUC Values for the Four Models</span>")  %>%
+  kable_styling(full_width = FALSE, position="center") %>%
+  add_header_above(c(" " = 2)) %>%
+  footnote(general_title = "")
 
 
-
-
-# ROC plot 
-grid.arrange(p_roc,ncol=1,heights=c(5),top=textGrob("ROC Curves: Model Comparison",gp=gpar(fontsize=16,fontface="bold"))
+# ---- Combined ROC Data for ggplot ----
+roc_df <- rbind(
+  data.frame(fpr = 1 - roc_core_nochol$specificities,
+             tpr = roc_core_nochol$sensitivities,
+             Model = "Core - No Chol"),
+  data.frame(fpr = 1 - roc_core_withchol$specificities,
+             tpr = roc_core_withchol$sensitivities,
+             Model = "Core - With Chol"),
+  data.frame(fpr = 1 - roc_adj_nochol$specificities,
+             tpr = roc_adj_nochol$sensitivities,
+             Model = "Adjusted - No Chol"),
+  data.frame(fpr = 1 - roc_adj_withchol$specificities,
+             tpr = roc_adj_withchol$sensitivities,
+             Model = "Adjusted - With Chol"),
+  data.frame(fpr= 1 - roc_step_adj_withchol$specificities,
+             tpr = roc_step_adj_withchol$sensitivities,
+             Model= "Stepwise Adjusted - With Chol")
 )
+
+```{r roc_plot_all, fig.width=10, fig.height=8, message=FALSE, warning=FALSE}
+# ---- ROC Plot ----
+p_roc_all <- ggplot(roc_df, aes(x=fpr, y=tpr, color=Model)) +
+  geom_line(size=1.2) +
+  geom_abline(slope=1, intercept=0, linetype="dashed", color="gray40") +
+  theme_minimal(base_size=14) +
+  labs(
+    title = "ROC Curves for All Models (Sensitivity Analysis)",
+    x = "1 - Specificity",
+    y = "Sensitivity"
+  ) +
+  annotate("text", x = 0.65, y = 0.1,
+         label = paste0(
+           "AUCs:\n",
+           "Core-NoChol = ", round(auc_core_nochol,3), "\n",
+           "Core-WithChol = ", round(auc_core_withchol,3), "\n",
+           "Adj-NoChol = ", round(auc_adj_nochol,3), "\n",
+           "Adj-WithChol = ", round(auc_adj_withchol,3), "\n",
+           "Step-Adj-WithChol =",round(auc_step_adj_withchol,3)
+         ),
+         hjust = 0, vjust = 0, size = 4.2) +
+  scale_color_manual(values=c(
+    "Core - No Chol"="#1F77B4",
+    "Core - With Chol"="#FF7F0E",
+    "Adjusted - No Chol"="#2CA02C",
+    "Adjusted - With Chol"="#D62728",
+    "Stepwise Adjusted - With Chol"="#9467BD"
+  )) +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(hjust=0.5, face="bold", size=16),
+    legend.title = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+p_roc_all
+
