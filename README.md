@@ -1,17 +1,17 @@
-Factors Affecting Diabetes – Data Analysis Project
+🩺 Factors Affecting Diabetes – Data Analysis Project
 
 Author: Nikolaos Tzouras
 Date: October 2025
 
-About this Project
+🧠 About this Project
 
-This project examines how demographic, behavioral, and clinical factors influence the likelihood of having diabetes using data from the NHANES (National Health and Nutrition Examination Survey).
+This project examines how demographic, behavioral, and clinical factors influence the likelihood of having diabetes, using data from the NHANES (National Health and Nutrition Examination Survey).
 
 The analysis explores the effects of Age, Gender, BMI, Smoking Status, Total Cholesterol, Physical Activity, Self-Rated Health, and other variables to understand their association with diabetes.
 
 The work combines data cleaning, descriptive statistics, and logistic regression modeling with a detailed sensitivity analysis to evaluate the stability and accuracy of results.
 
-Key Highlights
+📊 Key Highlights
 
 Age and BMI are the strongest and most consistent predictors of diabetes.
 
@@ -23,19 +23,21 @@ Adding Total Cholesterol slightly improved model performance but likely reflects
 
 All models achieved AUC > 0.80, demonstrating strong predictive accuracy.
 
-What You Will Find
+📁 What You Will Find
 
 Diabetes_Project_Analysis.Rmd → The complete R Markdown file containing the data cleaning, analysis, models, and visualizations.
 
 Diabetes_Project_Analysis.html → The rendered report with all plots, tables, and results, viewable in any browser.
 
-Tools & Methods
+⚙️ Tools & Methods
+🧩 Tools
 
 Language: R
 
-Key Packages: NHANES, ggplot2, dplyr, tidyr, pROC, car, ResourceSelection, kableExtra, tidyverse
+Key Packages:
+NHANES, ggplot2, dplyr, tidyr, pROC, car, ResourceSelection, kableExtra, tidyverse
 
-Analysis Techniques:
+🧮 Methods
 
 Descriptive statistics and exploratory visualizations
 
@@ -43,29 +45,37 @@ Logistic regression models (Core, Adjusted, and Stepwise)
 
 Sensitivity analysis with model comparison
 
-Model diagnostics (Odds Ratios, VIF, Hosmer–Lemeshow Test, ROC–AUC)
+Model diagnostics:
 
-How to Explore
+Odds Ratios (OR)
 
-Open Diabetes_Project_Analysis.Rmd in RStudio to review or run the analysis yourself.
+Variance Inflation Factor (VIF)
 
-Knit the document to HTML to reproduce the full report.
+Hosmer–Lemeshow Goodness-of-Fit Test
 
-Or simply open Diabetes_Project_Analysis.html in your browser to view the final output.
+ROC–AUC evaluation
 
-Project Motivation
+🚀 How to Explore
+
+Open Diabetes_Project_Analysis.Rmd in RStudio to view or run the full analysis.
+
+Knit the file to HTML or PDF to reproduce the complete report.
+
+Or simply open Diabetes_Project_Analysis.html in your web browser to explore the final output.
+
+💡 Project Motivation
 
 This project was developed to explore how everyday health and lifestyle indicators contribute to diabetes risk. It demonstrates how data-driven approaches can be used to identify key public health insights and evaluate predictive models in a transparent, reproducible way.
 
-Future Work
+🔮 Future Work
 
-Extending the analysis with machine learning classifiers for prediction (e.g., Random Forest, XGBoost).
+Extend the analysis with machine learning classifiers (e.g., Random Forest, XGBoost) for predictive modeling.
 
-Investigating interaction effects between demographic and behavioral variables.
+Investigate interaction effects between demographic and behavioral variables.
 
-Incorporating longitudinal data to assess causal relationships over time.
+Incorporate longitudinal data to examine causal relationships over time.
 
-Contact
+🧾 Contact
 
 Author: Nikolaos Tzouras
 📧 [YourEmailHere@example.com
