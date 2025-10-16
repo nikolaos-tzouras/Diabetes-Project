@@ -85,8 +85,9 @@ This project was developed to explore how everyday health and lifestyle indicato
 
 ## 🧾 **Contact**
 
-📧 [tzourasnikos@gmail.com]
-🔗 [www.linkedin.com/in/nikolaos-tzouras]
+### 📧 [tzourasnikos@gmail.com]
+
+### 🔗 [www.linkedin.com/in/nikolaos-tzouras]
 
 ---
 
