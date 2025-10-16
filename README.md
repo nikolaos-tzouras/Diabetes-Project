@@ -1,113 +1,73 @@
-🩺 Factors Affecting Diabetes – Data Analysis Project
+Factors Affecting Diabetes – Data Analysis Project
 
 Author: Nikolaos Tzouras
 Date: October 2025
 
-🧠 About This Project
+About this Project
 
-This project investigates how demographic, behavioral, and clinical factors influence the likelihood of having diabetes, using data from the NHANES (National Health and Nutrition Examination Survey).
-The analysis explores how variables like Age, Gender, BMI, Smoking Status, Total Cholesterol and Self-Rated Health are associated with diabetes, using descriptive statistics and logistic regression modeling.
+This project examines how demographic, behavioral, and clinical factors influence the likelihood of having diabetes using data from the NHANES (National Health and Nutrition Examination Survey).
 
-The work combines data cleaning, exploratory data analysis, predictive modeling, and model validation, resulting in a comprehensive and reproducible research report built entirely in R Markdown.
+The analysis explores the effects of Age, Gender, BMI, Smoking Status, Total Cholesterol, Physical Activity, Self-Rated Health, and other variables to understand their association with diabetes.
 
-📊 Key Highlights
+The work combines data cleaning, descriptive statistics, and logistic regression modeling with a detailed sensitivity analysis to evaluate the stability and accuracy of results.
+
+Key Highlights
 
 Age and BMI are the strongest and most consistent predictors of diabetes.
 
-Individuals who rate their general health as “Poor” have 6× higher odds of diabetes.
+Participants who rated their health as “Poor” were around six times more likely to have diabetes.
 
-Gender and Smoking Status show smaller, non-significant effects.
+Gender and Smoking Status showed smaller, mostly non-significant effects.
 
-Including Total Cholesterol improves model performance slightly but its inverse association likely reflects treatment or behavior effects.
+Adding Total Cholesterol slightly improved model performance but likely reflects treatment or lifestyle adjustments.
 
 All models achieved AUC > 0.80, demonstrating strong predictive accuracy.
 
-The Adjusted Model (with Cholesterol) and Stepwise Model were the most robust and stable specifications.
+What You Will Find
 
-📁 What You Will Find
-File	Description
-Diabetes_Project_Analysis.Rmd	R Markdown source file with all code, analysis, tables, and plots
-Diabetes_Project_Analysis.html	Rendered report (HTML format)
+Diabetes_Project_Analysis.Rmd → The complete R Markdown file containing the data cleaning, analysis, models, and visualizations.
 
-⚙️ Tools & Methods
-🧩 Tools
-R packages:
-NHANES, ggplot2, dplyr, tidyr, pROC, car, ResourceSelection, kableExtra, tidyverse
+Diabetes_Project_Analysis.html → The rendered report with all plots, tables, and results, viewable in any browser.
 
-🧮 Methods
--Data preprocessing & missing value handling
--Descriptive statistics (categorical & continuous variables)
--Visualization using ggplot2
--Binary Logistic Regression models
--Sensitivity Analysis: Core, Adjusted, and Stepwise models
+Tools & Methods
 
-Model Diagnostics:
--Odds Ratios (OR) with 95% CI
--Variance Inflation Factor (VIF) for multicollinearity
--Hosmer–Lemeshow goodness-of-fit test
--ROC curves and AUC metrics for predictive performance
+Language: R
 
-🔍 Methodology Summary
-Five logistic regression models were compared to evaluate stability and robustness:
-Model	Description:
--Core (No Cholesterol)	Includes Age, Gender, BMI, and Smoking Status
--Core (With Cholesterol)	Adds Total Cholesterol
--Adjusted (No Cholesterol)	Adds Race, Education, Physical Activity, Depression, Self-Rated Health
--Adjusted (With Cholesterol)	Includes Total Cholesterol
--Stepwise Adjusted (With Cholesterol)	AIC-based selection of optimal predictors
+Key Packages: NHANES, ggplot2, dplyr, tidyr, pROC, car, ResourceSelection, kableExtra, tidyverse
 
-All models were evaluated using Likelihood Ratio Tests, VIF, Hosmer–Lemeshow Tests, and ROC–AUC.
-The Adjusted Model (With Cholesterol) achieved the best balance between simplicity and predictive power (AUC ≈ 0.851).
+Analysis Techniques:
 
-🚀 How to Explore
-Install Dependencies
-install.packages(c("NHANES", "ggplot2", "dplyr", "tidyr", "scales",
-                   "gridExtra", "pROC", "knitr", "tidyverse",
-                   "ResourceSelection", "car", "kableExtra"))
-Open and Run
-Open Diabetes_Project_Analysis.Rmd in RStudio.
+Descriptive statistics and exploratory visualizations
 
-Click Knit → Knit to HTML to reproduce the full report.
+Logistic regression models (Core, Adjusted, and Stepwise)
 
-View Results
+Sensitivity analysis with model comparison
 
-Plots: Distributions, proportions, and ROC curves.
+Model diagnostics (Odds Ratios, VIF, Hosmer–Lemeshow Test, ROC–AUC)
 
-Tables: Summary stats, Odds Ratios, and model diagnostics.
+How to Explore
 
-📈 Key Insights
-Older, heavier, and less physically active individuals are significantly more likely to have diabetes.
+Open Diabetes_Project_Analysis.Rmd in RStudio to review or run the analysis yourself.
 
-Self-rated poor health is a strong indicator of diabetes presence.
+Knit the document to HTML to reproduce the full report.
 
-Including Total Cholesterol refines model fit but doesn’t change overall trends.
+Or simply open Diabetes_Project_Analysis.html in your browser to view the final output.
 
-The Stepwise Model confirms that simplifying the model retains predictive strength.
+Project Motivation
 
-🧾 Interpretation Notes
+This project was developed to explore how everyday health and lifestyle indicators contribute to diabetes risk. It demonstrates how data-driven approaches can be used to identify key public health insights and evaluate predictive models in a transparent, reproducible way.
 
-This analysis is cross-sectional — associations should not be interpreted as causal.
+Future Work
 
-The inverse link with cholesterol likely reflects diabetes management (medication or diet), not protective effects.
+Extending the analysis with machine learning classifiers for prediction (e.g., Random Forest, XGBoost).
 
-All findings are statistically valid but should be contextualized within broader clinical research.
+Investigating interaction effects between demographic and behavioral variables.
 
-🧰 Skills Demonstrated
+Incorporating longitudinal data to assess causal relationships over time.
 
-Data wrangling and preprocessing
-
-Statistical modeling and interpretation
-
-Advanced visualization in R
-
-Reproducible reporting with R Markdown
-
-Model evaluation and diagnostic interpretation
-
-📬 Contact
+Contact
 
 Author: Nikolaos Tzouras
-📧 tzourasnikos@gmail.com
-
-📜 License
-Feel free to use, adapt, and share with proper attribution.
+📧 [YourEmailHere@example.com
+]
+🔗 [Your GitHub or LinkedIn Profile]
