@@ -3,6 +3,7 @@
 - Author: Nikolaos Tzouras
 - Date: October 2025
 
+---
 
 🧠 About this Project
 
@@ -12,6 +13,7 @@
 
 - The work combines data cleaning, descriptive statistics, and logistic regression modeling with a detailed sensitivity analysis to evaluate the stability and accuracy of results.
 
+---
 
 📊 Key Highlights
 
@@ -25,6 +27,7 @@
 
 - All models achieved AUC > 0.80, demonstrating strong predictive accuracy.
 
+---
 
 📁 What You Will Find
 
@@ -32,6 +35,7 @@
 
 - Diabetes_Project_Analysis.html → The rendered report with all plots, tables, and results, viewable in any browser.
 
+---
 
 ⚙️ Tools & Methods
 
@@ -61,6 +65,7 @@ Model diagnostics:
 
 - ROC–AUC evaluation
 
+---
 
 🚀 How to Explore
 
@@ -68,9 +73,9 @@ Model diagnostics:
 
 - Knit the file to HTML to reproduce the complete report.
 
-Or simply open Diabetes_Project_Analysis.html in your web browser to explore the final output.
+- Or simply open Diabetes_Project_Analysis.html in your web browser to explore the final output.
 
-
+---
 
 💡 Project Motivation
 
@@ -84,3 +89,6 @@ This project was developed to explore how everyday health and lifestyle indicato
 🔗 [www.linkedin.com/in/
 nikolaos-tzouras]
 
+---
+
+This project demonstrates my ability to handle real-world health data, perform statistical analysis, and create clear, interpretable visualizations.
