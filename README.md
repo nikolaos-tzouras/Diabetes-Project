@@ -1,11 +1,11 @@
-🩺 Factors Affecting Diabetes – Data Analysis Project
+## 🩺 **Factors Affecting Diabetes – Data Analysis Project**
 
 - Author: Nikolaos Tzouras
 - Date: October 2025
 
 ---
 
-🧠 About this Project
+## 🧠 **About this Project**
 
 - This project examines how demographic, behavioral, and clinical factors influence the likelihood of having diabetes, using data from the NHANES (National Health and Nutrition Examination Survey).
 
@@ -15,7 +15,7 @@
 
 ---
 
-📊 Key Highlights
+## 📊 **Key Highlights**
 
 - Age and BMI are the strongest and most consistent predictors of diabetes.
 
@@ -29,7 +29,7 @@
 
 ---
 
-📁 What You Will Find
+## 📁 **What You Will Find**
 
 - Diabetes_Project_Analysis.Rmd → The complete R Markdown file containing the data cleaning, analysis, models, and visualizations.
 
@@ -37,9 +37,9 @@
 
 ---
 
-⚙️ Tools & Methods
+## ⚙️ **Tools & Methods**
 
-🧩 Tools
+### 🧩 **Tools**
 
 - Language: R
 
@@ -47,7 +47,7 @@ Key Packages:
 - NHANES, ggplot2, dplyr, tidyr, pROC, car, ResourceSelection, kableExtra, tidyverse
 
 
-🧮 Methods
+### 🧮 **Methods**
 
 - Descriptive statistics and exploratory visualizations
 
@@ -67,7 +67,7 @@ Model diagnostics:
 
 ---
 
-🚀 How to Explore
+## 🚀 **How to Explore**
 
 - Open Diabetes_Project_Analysis.Rmd in RStudio to view or run the full analysis.
 
@@ -77,13 +77,13 @@ Model diagnostics:
 
 ---
 
-💡 Project Motivation
+## 💡 **Project Motivation**
 
 This project was developed to explore how everyday health and lifestyle indicators contribute to diabetes risk. It demonstrates how data-driven approaches can be used to identify key public health insights and evaluate predictive models in a transparent, reproducible way.
 
 
 
-🧾 Contact
+## 🧾 **Contact**
 
 📧 [tzourasnikos@gmail.com]
 🔗 [www.linkedin.com/in/
@@ -91,4 +91,4 @@ nikolaos-tzouras]
 
 ---
 
-This project demonstrates my ability to handle real-world health data, perform statistical analysis, and create clear, interpretable visualizations.
+**This project demonstrates my ability to handle real-world health data, perform statistical analysis, and create clear, interpretable visualizations.**
